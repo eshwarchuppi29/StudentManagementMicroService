@@ -1,0 +1,112 @@
+1) To Enable swagger
+   -----------------
+
+    1) Install-Package NSwag.AspNetCore
+
+    2) Add the below line of code in the Program.cs file to get the swagger page on running of the project.
+
+        app.UseSwaggerUi(options =>
+        {
+            options.DocumentPath = "/openapi/v1.json";
+            options.Path = "/swagger";
+        });
+
+
+2) To Create Gateway Project
+   -------------------------
+
+        1) Create Asp.net core empty project
+        2) Install Yarp.ReverseProxy pacakge from the Nuget.
+
+3)  To Install EF
+    -------------
+
+        1) Install the below package
+
+            Microsoft.EntityFrameworkCore
+            Microsoft.EntityFrameworkCore.SqlServer
+            Microsoft.EntityFrameworkCore.Tools
+
+        2) Add connection string to AppSettings.json file
+
+            {
+                "ConnectionStrings": {
+                "StaffDb": "Server=(localdb)\MSSQLLocalDB;Database=StaffDb;Trusted_Connection=True;TrustServerCertificate=True;"
+                },
+                "Logging": {
+                "LogLevel": {
+                    "Default": "Information",
+                    "Microsoft.AspNetCore": "Warning"
+                }
+                },
+                "AllowedHosts": "*"
+            }
+
+        3) Add the below line of code in the program.cs file
+                builder.Services.AddDbContext<StaffDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("StaffDb")));
+
+        4) Run the below commands
+
+            Add-Migration InitialCreate_Staff
+            Update-Database
+
+
+4)  To Install Automapper: Automapper will help us to map the DTO's to Entity and visaversa
+    ----------------------
+
+        1) Install the nuget packege: 
+            AutoMapper 13.0.1
+
+        2) Add the below line in your program.cs file
+
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+5) To Install Validator: Validaiton is used to validate the Request model coming to container, istead of using Data.Annotation, using below gives the better validaiton process.
+---------------------
+
+        1) Install the below nuget package
+	        FluentValidation.DependencyInjectionExtensions
+
+        2) Add the below Line in your program.cs file
+            builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
+        3) Inside the controller we need to manually call the validator method.
+
+
+6) GlobalExceptionHandlingMiddleware: This is the class created in the Middleware folder to handl the exception at the Global level (Entire applicaiton).
+    
+    a) Register that class in the Program.cs file as the Dependceny Injection.
+
+
+
+Docker
+-------
+To build the Docker images  run the below command in the root folder of the project
+
+Path: D:\JobChange\StudentManagementSystem\StudentManagementSystem
+
+Command: docker buildx build -t authservice -f GatewayService/Dockerfile .
+
+D:\JobChange\StudentManagementSystem\StudentManagementSystem>docker buildx build -t gatewayservice -f GatewayService/Dockerfile .
+D:\JobChange\StudentManagementSystem\StudentManagementSystem>docker  buildx build -t authservice -f AuthMicroService/Dockerfile .
+D:\JobChange\StudentManagementSystem\StudentManagementSystem>docker  buildx build -t staffservice -f StaffMicroService/Dockerfile .
+D:\JobChange\StudentManagementSystem\StudentManagementSystem>docker  buildx build -t studentservice -f StudentMicroService/Dockerfile .
+
+-t -> TagName or ImageName
+-f -> Dockerfile path
+
+
+
+To stop the containers
+->docker compose down 
+
+To start the containers
+-> ->docker compose up
+
+To re-build the project without cache 
+->docker compose build --no-cache
+
+To re-build the specific service (staff is the service name in the docker-compose.yml file)
+-> docker compose build --no-cache staff 
