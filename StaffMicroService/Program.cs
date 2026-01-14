@@ -54,6 +54,13 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
+// This will create the database tables automatically.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<StaffDbContext>();
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{

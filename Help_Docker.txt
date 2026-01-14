@@ -1,0 +1,4 @@
+To Start the Docker Service
+---------------------------
+Open the Command prompt in administrator mode and run the below command
+C:\Windows\System32>net start com.docker.service

@@ -12,8 +12,8 @@ using StaffMicroService.DatabaseContext;
 namespace StaffMicroService.Migrations
 {
     [DbContext(typeof(StaffDbContext))]
-    [Migration("20251203144402_InitialCreate_Staff")]
-    partial class InitialCreate_Staff
+    [Migration("20260114104240_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

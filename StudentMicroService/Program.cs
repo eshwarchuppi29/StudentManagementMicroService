@@ -8,6 +8,7 @@ using StudentMangementSystem.Model.Log.Interface;
 using StudentMangementSystem.Model.Models;
 using StudentMangementSystem.Model.Response;
 using StudentMicroService.DatebaseFactory;
+using StudentMicroService.Infrastructure;
 using StudentMicroService.Middlewares;
 using StudentMicroService.Repositories.Implementation;
 using StudentMicroService.Repositories.Interfaces;
@@ -35,10 +36,10 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IApiLogRepository, ApiLogRepository>();
 
 // Global leve [Authorize] Attribute and no need to specify in all the controllers
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(new AuthorizeFilter());
-});
+//builder.Services.AddControllers(options =>
+//{
+//    options.Filters.Add(new AuthorizeFilter());
+//});
 
 // JWT Auth token validation
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -69,5 +70,9 @@ app.UseAuthorization();
 app.UseMiddleware<ApiLoggingMiddleware>();
 
 app.MapControllers();
+
+//Below will run the scripts automatically incase if it found a new script version.
+var connectionstring = builder.Configuration.GetConnectionString("StudentDB");
+new DatabaseMigrationRunner(connectionstring).Run();
 
 app.Run();

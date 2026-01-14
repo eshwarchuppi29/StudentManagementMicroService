@@ -38,22 +38,21 @@ namespace StudentMicroService.Repositories.Implementation
                 parameters.Add("@FirstName", student.FirstName, DbType.String);
                 parameters.Add("@MiddleName", student.MiddleName, DbType.String);
                 parameters.Add("@LastName", student.LastName, DbType.String);
-                parameters.Add("@DateOfBirth", student.DateOfBirth, DbType.Date);
+                parameters.Add("@DateOfBirth", student.DateOfBirth, DbType.DateTime);
                 parameters.Add("@Gender", student.Gender, DbType.Int16);
                 parameters.Add("@FatherName", student.FatherName, DbType.String);
                 parameters.Add("@MotherName", student.MotherName, DbType.String);
-                parameters.Add("@AdharNumber", student.MotherName, DbType.String);
+                parameters.Add("@AdharNumber", student.AdharNumber, DbType.String);
                 parameters.Add("@Address", student.Address, DbType.String);
                 parameters.Add("@CreatedBy", student.CreatedBy, DbType.String);
 
                 parameters.Add("@StudentId", null, DbType.Guid, ParameterDirection.Output);
-                parameters.Add("@Message", null, DbType.Guid, ParameterDirection.Output);
-                parameters.Add("@ReturnValue", null, DbType.Int16, ParameterDirection.ReturnValue);
+                parameters.Add("@Message", dbType: DbType.String, size: 500, direction: ParameterDirection.Output);
+                parameters.Add("@ReturnValue", null, DbType.Int32, ParameterDirection.ReturnValue);
 
                 await connection.ExecuteAsync(sql: "sp_AddNewStudent",
                                             param: parameters,
                                             commandType: CommandType.StoredProcedure);
-
                 int result = parameters.Get<int>("ReturnValue");
                 if (result == 0)
                 {
