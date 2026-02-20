@@ -1,12 +1,7 @@
-using Dapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.OpenApi.MicrosoftExtensions;
 using StudentMangementSystem.Auth;
 using StudentMangementSystem.Model.Log.Interface;
-using StudentMangementSystem.Model.Models;
-using StudentMangementSystem.Model.Response;
 using StudentMicroService.DatebaseFactory;
 using StudentMicroService.Infrastructure;
 using StudentMicroService.Middlewares;
@@ -65,7 +60,6 @@ app.UseSwaggerUi(options =>
 });
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -75,9 +69,6 @@ app.UseMiddleware<ApiLoggingMiddleware>();
 app.MapControllers();
 
 //Below will run the scripts automatically incase if it found a new script version.
-//var connectionstring = builder.Configuration.GetConnectionString("StudentDB");
-//new DatabaseMigrationRunner();
-
 using (var scope = app.Services.CreateScope())
 {
     try
@@ -95,5 +86,4 @@ using (var scope = app.Services.CreateScope())
 
     }
 }
-
 app.Run();

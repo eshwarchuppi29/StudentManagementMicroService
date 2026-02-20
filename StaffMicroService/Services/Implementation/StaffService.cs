@@ -12,20 +12,23 @@ namespace StaffMicroService.Services.Implementation
     public class StaffService : IStaffService
     {
         private readonly IStaffRepository _staffRepository;
-        //private readonly IStudentService _studentService;
+        private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
 
-        public StaffService(IStaffRepository staffRepository, IMapper mapper)
+        public StaffService(IStaffRepository staffRepository, IMapper mapper, IStudentService studentService)
         {
             _staffRepository = staffRepository;
             _mapper = mapper;
-            //_studentService = studentService;
+            _studentService = studentService;
         }
 
         public async Task<IEnumerable<StaffResponse>> GetAllStaffAsync()
         {
             var staffList = await _staffRepository.GetAllAsync();
-            //var data = await _studentService.GetAllStudents();
+
+            // Calling StudentMicroService to get the student details.
+            var data = await _studentService.GetAllStudents();
+            var studentData = data.Result;
             return staffList.Select(s => _mapper.Map<StaffResponse>(s));
         }
 

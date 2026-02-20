@@ -10,7 +10,6 @@ using StudentMicroService.Services.Interface;
 
 namespace StudentMicroService.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class StudentsController : ControllerBase

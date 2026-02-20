@@ -3,12 +3,12 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "AuthMicroService\\AuthMicroService.csproj",
+        "Path": "GatewayService\\GatewayService.csproj",
         "Action": "Start",
         "DebugTarget": "IIS Express"
       },
       {
-        "Path": "StudentMicroService\\StudentMicroService.csproj",
+        "Path": "AuthMicroService\\AuthMicroService.csproj",
         "Action": "Start",
         "DebugTarget": "IIS Express"
       },
@@ -18,7 +18,7 @@
         "DebugTarget": "IIS Express"
       },
       {
-        "Path": "GatewayService\\GatewayService.csproj",
+        "Path": "StudentMicroService\\StudentMicroService.csproj",
         "Action": "Start",
         "DebugTarget": "IIS Express"
       }
