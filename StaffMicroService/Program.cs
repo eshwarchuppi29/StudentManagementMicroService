@@ -9,11 +9,13 @@ using StaffMicroService.Middlewares;
 using StaffMicroService.Repositories.Implementation;
 using StaffMicroService.Repositories.Interfaces;
 using StaffMicroService.Services.Implementation;
+using StaffMicroService.Services.Integrations.StudentMicroService;
 using StaffMicroService.Services.Interfaces;
 using StaffMicroService.Validations;
 using StudentMangementSystem.Auth;
 using StudentMangementSystem.Model.Models;
 using StudentMangementSystem.Model.Response;
+using StudentMicroService.Services.Implementation;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,12 @@ builder.Services.AddScoped<IApiLogRepository, ApiLogRepository>();
 
 // Dependency Injection of Services
 builder.Services.AddScoped<IStaffService, StaffService>();
+
+//builder.Services.AddHttpClient<IStudentService,StudentServiceClient>();
+
+// Register Student Service Configuration
+//builder.Services.Configure<StudentServiceSettings>(
+//    builder.Configuration.GetSection("StudentService"));
 
 // Dependecy Injection for the Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -36,15 +36,18 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IApiLogRepository, ApiLogRepository>();
 
 // Global leve [Authorize] Attribute and no need to specify in all the controllers
-//builder.Services.AddControllers(options =>
-//{
-//    options.Filters.Add(new AuthorizeFilter());
-//});
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new AuthorizeFilter());
+});
 
 // JWT Auth token validation
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
+
+// Registering DatabaseMigrationRunner
+builder.Services.AddTransient<DatabaseMigrationRunner>();
 
 var app = builder.Build();
 
@@ -72,7 +75,25 @@ app.UseMiddleware<ApiLoggingMiddleware>();
 app.MapControllers();
 
 //Below will run the scripts automatically incase if it found a new script version.
-var connectionstring = builder.Configuration.GetConnectionString("StudentDB");
-new DatabaseMigrationRunner(connectionstring).Run();
+//var connectionstring = builder.Configuration.GetConnectionString("StudentDB");
+//new DatabaseMigrationRunner();
+
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        Console.WriteLine("Resolving DatabaseMigrationRunner");
+
+        var runner = scope.ServiceProvider
+                          .GetRequiredService<DatabaseMigrationRunner>();
+
+        Console.WriteLine("Calling Run()");
+        runner.Run();
+    }
+    catch (Exception excp)
+    {
+
+    }
+}
 
 app.Run();

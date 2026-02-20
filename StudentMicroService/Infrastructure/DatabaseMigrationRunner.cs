@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Hosting;
 using System.Text.RegularExpressions;
 
 namespace StudentMicroService.Infrastructure
@@ -6,10 +7,13 @@ namespace StudentMicroService.Infrastructure
     public class DatabaseMigrationRunner
     {
         private readonly string _connectionString;
+        private readonly IHostEnvironment _env;
 
-        public DatabaseMigrationRunner(string connectionString)
+
+        public DatabaseMigrationRunner(IConfiguration configuration,IHostEnvironment env)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration.GetConnectionString("StudentDB");
+            _env= env;
         }
 
         public void Run()
@@ -22,10 +26,18 @@ namespace StudentMicroService.Infrastructure
             EnsureVersionTable(conn);
             var currentVersion = GetCurrentVersion(conn);
 
-            Console.WriteLine("Current Version:" + currentVersion);
-            var scripts = Directory.GetFiles("Infrastructure\\Database", "V*.sql")
+            // Gettting the sql server file path by IHostEnvironment to avoid
+            // Conflict between IISExpress and Container
+            var basePath = _env.ContentRootPath;
+            var sqlFilePath = Path.Combine(
+                basePath,
+                "Infrastructure",
+                "Database"
+            );
+            var scripts = Directory.GetFiles(sqlFilePath, "V*.sql")
                                    .OrderBy(x => x)
                                    .ToList();
+
             foreach (var script in scripts)
             {
                 Console.WriteLine(string.Format("Start Script: {0}", script));

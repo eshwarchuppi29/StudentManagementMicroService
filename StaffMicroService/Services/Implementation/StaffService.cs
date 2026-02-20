@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using StaffMicroService.Repositories.Interfaces;
+using StaffMicroService.Services.Integrations.StudentMicroService;
 using StaffMicroService.Services.Interfaces;
 using StudentMangementSystem.Model.Models.Staff;
 using StudentMangementSystem.Model.Requst.Staff;
@@ -11,17 +12,20 @@ namespace StaffMicroService.Services.Implementation
     public class StaffService : IStaffService
     {
         private readonly IStaffRepository _staffRepository;
+        //private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
 
         public StaffService(IStaffRepository staffRepository, IMapper mapper)
         {
             _staffRepository = staffRepository;
             _mapper = mapper;
+            //_studentService = studentService;
         }
 
         public async Task<IEnumerable<StaffResponse>> GetAllStaffAsync()
         {
             var staffList = await _staffRepository.GetAllAsync();
+            //var data = await _studentService.GetAllStudents();
             return staffList.Select(s => _mapper.Map<StaffResponse>(s));
         }
 

@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\StudentMangementSystem.Auth\StudentMangementSystem.Auth.csproj" />
     <ProjectReference Include="..\StudentMangementSystem.Model\StudentMangementSystem.Model.csproj" />
+    <ProjectReference Include="..\StudentMicroService\StudentMicroService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
