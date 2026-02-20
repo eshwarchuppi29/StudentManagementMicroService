@@ -17,7 +17,7 @@ namespace StaffMicroService.Repositories.Implementation
 
         public async Task<IEnumerable<Staff>> GetAllAsync()
         {
-            return await _context.Staffs.ToListAsync();
+            return await _context.Staffs.Include(s=>s.Departments).ToListAsync();
         }
 
         public async Task<Staff> GetByIdAsync(Guid id)

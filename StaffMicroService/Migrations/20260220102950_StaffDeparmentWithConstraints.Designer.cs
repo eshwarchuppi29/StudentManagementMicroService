@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StaffMicroService.DatabaseContext;
 
@@ -11,9 +12,11 @@ using StaffMicroService.DatabaseContext;
 namespace StaffMicroService.Migrations
 {
     [DbContext(typeof(StaffDbContext))]
-    partial class StaffDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260220102950_StaffDeparmentWithConstraints")]
+    partial class StaffDeparmentWithConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +107,7 @@ namespace StaffMicroService.Migrations
 
                     b.HasIndex("DepartmentName");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Department");
                 });
 
             modelBuilder.Entity("StudentMangementSystem.Model.Models.Staff.Staff", b =>
@@ -223,13 +226,18 @@ namespace StaffMicroService.Migrations
 
             modelBuilder.Entity("StudentMangementSystem.Model.Models.Staff.Staff", b =>
                 {
-                    b.HasOne("StudentMangementSystem.Model.Models.Staff.Department", "Departments")
-                        .WithMany()
+                    b.HasOne("StudentMangementSystem.Model.Models.Staff.Department", "Department")
+                        .WithMany("Staffs")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Departments");
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("StudentMangementSystem.Model.Models.Staff.Department", b =>
+                {
+                    b.Navigation("Staffs");
                 });
 #pragma warning restore 612, 618
         }
